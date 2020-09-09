@@ -34,21 +34,26 @@ function startApp (){
 	const findButton = document.querySelector('.findButton');
 	findButton.addEventListener('click',handleFindButton);
 }
+
+function addDayNight(objDOM,obj){
+	if(objDOM.time > obj.sunset)
+	{
+		objDOM.classList.add('night');
+	}
+	else
+	{
+		objDOM.classList.add('day');
+	}
+
+}
 // display searched location in DOM
 function displaySearchedLocation(searchedLocation){
 	console.log("searched location",searchedLocation);
 	const searchesContainer = document.querySelector('.searchesContainer');
 	const cityWeather = document.createElement('div');
 	cityWeather.classList.add('card');
-	if(searchedLocation.time > searchedLocation.sunset)
-	{
-		cityWeather.classList.add('night');
-	}
-	else
-	{
-		cityWeather.classList.add('day');
-	}
 
+	addDayNight(cityWeather,searchedLocation);
 	let icon = searchedLocation.weather_icon;
 	cityWeather.innerHTML = 
 	`<div class="title">${searchedLocation.name}</div>
@@ -62,6 +67,7 @@ function displayCurrentLocation(weatherObject){
 	const currentWeather = document.createElement('div');
 	currentWeather.classList.add('showcase');
 	let icon = weatherObject.weather_icon;
+	addDayNight(currentWeather,weatherObject);
 
 	currentWeather.innerHTML = 
 	`<div class="location">${weatherObject.name}</div>
@@ -69,7 +75,7 @@ function displayCurrentLocation(weatherObject){
 	<div class="temperature">${weatherObject.temperature}&#8451;</div>
 	<div class="sunrise">Sunrise at ${weatherObject.sunrise}</div>
 	<div class="sunset">Sunset at ${weatherObject.sunset}</div>
-	<img src="${icon}" alt="weather-icon" class="icon">`;
+	<img src="${icon}" alt="weather-icon" class="current-icon">`;
 	showcaseContainer.appendChild(currentWeather);
 
 }
