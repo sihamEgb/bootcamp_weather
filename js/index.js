@@ -1,26 +1,10 @@
-console.log("hello sunny world");
-
+const iconBasePoint = `http://openweathermap.org/img/wn/`;
+const endpoint = "https://api.openweathermap.org/data/2.5/weather?";								   
+const apiKey = "4a2bf65c140b204aed9f0631644d4851";
+const city = "London";
 const searchedHistory = {
 
 };
-const weatherIcons = {
-	sunny: `<i class="fas fa-sun"></i>`,
-	cloudy: `<i class="fas fa-cloud"></i>`,
-	smog: `<i class="fas fa-smog"></i>`,
-	wind: `<i class="fas fa-wind"></i>`,
-	cloud_sun_rain: `<i class="fas fa-cloud-sun-rain"></i>`,
-	cloud_sun: `<i class="fas fa-cloud-sun-rain"></i>`,
-	cloud_showers_heavy: `<i class="fas fa-cloud-showers-heavy"></i>`,
-	cloud_rain: `<i class="fas fa-cloud-showers-heavy"></i>`,
-	snowflake: `<i class="fas fa-snowflake"></i>`
-}
-
-const endpoint = "https://api.openweathermap.org/data/2.5/weather?";
-											   
-const apiKey = "4a2bf65c140b204aed9f0631644d4851";
-// api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=4a2bf65c140b204aed9f0631644d4851
-const city = "London";
-
 
 // What I do
 startApp();
@@ -29,9 +13,6 @@ startApp();
 
 function handleFindButton(event){
 	const input = document.querySelector('input')
-	// console.log("event is",event);
-	console.log(input);
-	console.log(input.value);
 	getDataByCity(input.value);
 }
 function handleErrorMessage(err){
@@ -40,13 +21,10 @@ function handleErrorMessage(err){
 
 }
 function startApp (){
-  let data = [];
 	getLocation();
 
 	const findButton = document.querySelector('.findButton');
-	console.log(findButton);
 	findButton.addEventListener('click',handleFindButton);
-  // getData();
 }
 // display searched location in DOM
 function displaySearchedLocation(searchedLocation){
@@ -54,15 +32,11 @@ function displaySearchedLocation(searchedLocation){
 	const searchesContainer = document.querySelector('.searchesContainer');
 	const cityWeather = document.createElement('div');
 	cityWeather.classList.add('card');
-	let icon = weatherIcons['sunny'];
-	if(searchedLocation.temperature < 20)
-	{
-		icon = weatherIcons['cloudy'];
-	}
+	let icon = searchedLocation.weather_icon;
 	cityWeather.innerHTML = 
 	`<div class="title">${searchedLocation.name}</div>
 	<div class="temperature">${searchedLocation.temperature}&#8451;</div>
-	<div class="icon">${icon}</div>`;
+	<img src="${icon}" alt="weather-icon" class="icon">`;
 	searchesContainer.appendChild(cityWeather);
 }
 // display the current  in DOM
@@ -71,22 +45,11 @@ function displayCurrentLocation(weatherObject){
 	const currentWeather = document.createElement('div');
 	currentWeather.classList.add('showcase');
 	currentWeather.innerHTML = 
-	`<div class="name">
-		<div class="title">Weather In</div>
-		<div class="value">${weatherObject.name}</div>
-	</div>
-	<div class="temperature">
-		<div class="title">Temperature</div>
-		<div class="value">${weatherObject.temperature}&#8451;</div>
-	</div>
-	<div class="sunrise">
-		<div class="title">Sunrise</div>
-		<div class="value">${weatherObject.sunrise}</div>
-	</div>
-		<div class="sunset">
-		<div class="title">Sunset</div>
-		<div class="value">${weatherObject.sunset}</div>
-	</div>`;
+	`<div class="location">${weatherObject.name}</div>
+	<div class="temperature">${weatherObject.temperature}&#8451;</div>
+	<div class="sunrise">Sunrise at ${weatherObject.sunrise}</div>
+	<div class="sunset">Sunset at ${weatherObject.sunset}</div>
+	`;
 	showcaseContainer.appendChild(currentWeather);
 
 }
@@ -103,13 +66,11 @@ function getTimeFromUTC(unix_timestamp){
 
 	// Will display time in 10:30:23 format
 	const formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-
-	console.log(formattedTime);
 	return formattedTime;
 }
 // get data to one location
 function createObject(response){
-	console.log("response is",response);
+	// console.log("response is",response);
 
 	const weatherObject = {
 		id: response.id,
@@ -117,7 +78,11 @@ function createObject(response){
 		temperature: convertTemperature(response.main.temp),
 		sunrise: getTimeFromUTC(response.sys.sunrise),
 		sunset: getTimeFromUTC(response.sys.sunset),
+		weather: response.weather[0].description,
+		weather_icon: `${iconBasePoint}${response.weather[0].icon}@2x.png`,
 	}
+	// console.log("object is",weatherObject);
+
 	return weatherObject;
 
 }
@@ -134,7 +99,6 @@ async function getLocationWeather(location){
 
 	displayCurrentLocation(resultObject);
 
-	// console.log(data);
 
 }
 async function getDataByCity(city) {
@@ -145,13 +109,11 @@ async function getDataByCity(city) {
 	
 		const response = await fetch(url);
 		const data = await response.json();
-		// console.log("response bla",response);
-		// console.log("response bla",data);
 		if(data.cod === "404"){
 			throw data.message;
 		}
 		const resultObject = createObject(data);
-		
+	
 		if(searchedHistory[resultObject.name]){
 			throw "City is already shown on screen!";
 		}
@@ -160,8 +122,7 @@ async function getDataByCity(city) {
 			displaySearchedLocation(resultObject);
 		}
 	
-		console.log(data);
-
+	
 	}catch(err){
 		handleErrorMessage(err);
 	}
@@ -171,10 +132,6 @@ async function getLocation() {
 
 	function locationRetrieved(position) {
 		const currentLocation = position.coords;
-		console.log("#############");
-		console.log(currentLocation);
-		console.log(currentLocation.latitude);
-		console.log(currentLocation.longitude);
 		//make api call to get weather
 		getLocationWeather(currentLocation);
 	}
@@ -185,29 +142,6 @@ async function getLocation() {
   } else {
     console.log("Geolocation is not supported by this browser.");
   }
-}
-
-
-
-async function getCurrentLocation(){
-	const options = {
-		enableHighAccuracy: true,
-		timeout: 50000,
-		maximumAge: 0
-	};
-	const error = (err) => {
-		console.warn(`ERROR(${err.code}): ${err.message}`);
-	};
-	const success = (pos) => {
-		let crd = pos.coords;
-		console.log('Your current position is:');
-		console.log(`Latitude : ${crd.latitude}`);
-		console.log(`Longitude: ${crd.longitude}`);
-		console.log(`More or less ${crd.accuracy} meters.`);
-		currentLocation = crd;
-		console.log(currentLocation);
-	};
-	navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
 

@@ -1,5 +1,6 @@
-.body{
+body{
 	font-family: 'Work Sans', sans-serif;
+	/* color: white; */
 }
 .container{
 	/* width: 50%; */
@@ -26,12 +27,12 @@ body{
 }
 .showcase{
 	width:90vw;
-	/* display: flex; */
-	/* flex-direction: row; */
+	display: flex;
+	flex-direction: column;
 	text-align: center;
 	background-color: rgba(0,0,0,0.2);
-	padding: 0.5rem;
-	margin: 0.5rem auto;
+	padding: 0.3rem;
+	margin: 0.3rem auto;
 	border-radius: 5%;
 }
 .searchesContainer{
@@ -53,13 +54,14 @@ body{
 	padding: 0.5rem;
 	border: 2px solid grey;
 }
-.sunny{
-
+.title{
+	font-size: 2rem;
 }
-.cloudy{
-
+.temperature{
+	font-size: 2rem;
 }
-.rainy{
-
+.icon{
+	width: 3rem;
+	height: 3rem;
 }
-	
+=
