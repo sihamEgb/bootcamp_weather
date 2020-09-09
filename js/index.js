@@ -40,6 +40,15 @@ function displaySearchedLocation(searchedLocation){
 	const searchesContainer = document.querySelector('.searchesContainer');
 	const cityWeather = document.createElement('div');
 	cityWeather.classList.add('card');
+	if(searchedLocation.time > searchedLocation.sunset)
+	{
+		cityWeather.classList.add('night');
+	}
+	else
+	{
+		cityWeather.classList.add('day');
+	}
+
 	let icon = searchedLocation.weather_icon;
 	cityWeather.innerHTML = 
 	`<div class="title">${searchedLocation.name}</div>
@@ -52,12 +61,15 @@ function displayCurrentLocation(weatherObject){
 	const showcaseContainer = document.querySelector('.showcaseContainer');
 	const currentWeather = document.createElement('div');
 	currentWeather.classList.add('showcase');
+	let icon = weatherObject.weather_icon;
+
 	currentWeather.innerHTML = 
 	`<div class="location">${weatherObject.name}</div>
+	<div class="time">${weatherObject.time}</div>
 	<div class="temperature">${weatherObject.temperature}&#8451;</div>
 	<div class="sunrise">Sunrise at ${weatherObject.sunrise}</div>
 	<div class="sunset">Sunset at ${weatherObject.sunset}</div>
-	`;
+	<img src="${icon}" alt="weather-icon" class="icon">`;
 	showcaseContainer.appendChild(currentWeather);
 
 }
@@ -78,7 +90,7 @@ function getTimeFromUTC(unix_timestamp){
 }
 // get data to one location
 function createObject(response){
-	// console.log("response is",response);
+	console.log("response is",response);
 
 	const weatherObject = {
 		id: response.id,
@@ -88,6 +100,7 @@ function createObject(response){
 		sunset: getTimeFromUTC(response.sys.sunset),
 		weather: response.weather[0].description,
 		weather_icon: `${iconBasePoint}${response.weather[0].icon}@2x.png`,
+		time: getTimeFromUTC(response.dt),
 	}
 	// console.log("object is",weatherObject);
 

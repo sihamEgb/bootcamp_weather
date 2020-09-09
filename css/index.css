@@ -1,6 +1,13 @@
 body{
-	font-family: 'Work Sans', sans-serif;
 	/* color: white; */
+	font-family: 'Merriweather', serif;
+
+}
+.logo{
+	font-size: 3rem;
+	text-align: center;
+	padding: 0.5rem;
+	font-weight: 500;
 }
 .container{
 	/* width: 50%; */
@@ -10,9 +17,12 @@ body{
 	text-align:center;
 }
 body{
-	background-image: url('../images/background_1.jpg') ;
+	background-image: url('../images/sea-ocean-horizon-mountain-snow-cloud-7497-pxhere.com.jpg') ;
 	width: 100%;
-	height: 100%;
+	height: 100vh;
+	background-position: center; 
+	background-repeat: no-repeat; 
+	background-size: cover; 	
 }
 .searchNavBar{
 	text-align: center;
@@ -49,10 +59,31 @@ body{
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-	width: 100%;
+	width: 200px;
+	height: auto;
 	margin: 1rem;
 	padding: 0.5rem;
-	border: 2px solid grey;
+	/* border: 2px solid grey; */
+	box-shadow: 2px 2px #888888;
+
+}
+.day{
+	background-image: url('../images/nature-horizon-cloud-sky-sunlight-atmosphere-1248502-pxhere.com.jpg') ;
+	width: 100%;
+	height: 100%;
+	background-position: center; 
+	background-repeat: no-repeat; 
+	background-size: cover; 
+}
+.night{
+	color: white;
+	background-image: url('../images/	tree-silhouette-sky-night-star-milky-way-3355-pxhere.com.jpg') ;
+	width: 100%;
+	height: 100%;
+	background-position: center; 
+	background-repeat: no-repeat; 
+	background-size: cover; 
+
 }
 .title{
 	font-size: 2rem;
@@ -61,7 +92,6 @@ body{
 	font-size: 2rem;
 }
 .icon{
-	width: 3rem;
-	height: 3rem;
+	width: 5rem;
+	height: 5rem;
 }
-=
