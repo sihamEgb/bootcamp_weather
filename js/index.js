@@ -12,8 +12,16 @@ startApp();
 // How I do it
 
 function handleFindButton(event){
-	const input = document.querySelector('input')
-	getDataByCity(input.value);
+	try{
+		const input = document.querySelector('input')
+		if(input.value === "")
+		{
+			throw "Please, insert a city name";
+		}
+		getDataByCity(input.value);
+	}catch(err){
+		handleErrorMessage(err);
+	}
 }
 function handleErrorMessage(err){
 	const output = document.querySelector('.output')
